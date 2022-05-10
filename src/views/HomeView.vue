@@ -12,7 +12,7 @@
           </div>
           <div class="input-form">
             <button type="submit" class="btn-submit">
-              <i class="fa-solid fa-magnifying-glass"></i>
+              <i class="bi bi-search"></i>
             </button>
           </div>
         </div>
@@ -63,11 +63,11 @@ h1 {
 }
 
 .input-form {
-  width: 90%;
+  width: 85%;
 }
 
 .input-form:nth-of-type(2) {
-  width: 17.5%;
+  width: 15%;
 }
 
 .input-form > input[type="text"] {
@@ -92,6 +92,7 @@ h1 {
 
 .btn-submit > i {
   color: white;
+  font-size: 1.05rem;
 }
 
 .btn-submit:hover {
