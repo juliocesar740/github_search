@@ -1,8 +1,13 @@
 const axios = require("axios");
 const getFavoriteRepositories = require("./getFavoriteRepositories");
+const hasFavoriteRepository = require("./hasFavoriteRepository");
 
 async function storeFavoriteRespository(owner, repo) {
-  const request = await axios(`https://api.github.com/repos/${owner}/${repo}`);
+  if (hasFavoriteRepository(repo)) return -1;
+
+  const request = await axios(
+    `https://api.github.com/repos/${owner}/${repo.name}`
+  );
   const data = request.data;
 
   const { favoriteRepositories } = getFavoriteRepositories();
@@ -12,7 +17,7 @@ async function storeFavoriteRespository(owner, repo) {
     "APP_FAVORITE_REPOSITORIES",
     JSON.stringify(favoriteRepositories)
   );
-  console.log(getFavoriteRepositories());
+  return true;
 }
 
 module.exports = storeFavoriteRespository;

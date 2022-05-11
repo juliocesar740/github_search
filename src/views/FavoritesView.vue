@@ -5,7 +5,13 @@
       <form action="" method="get" @submit.prevent="onSubmit">
         <div class="form-group form-group-row">
           <div class="input-form">
-            <input type="text" name="" id="" placeholder="Pesquise o usuário" />
+            <input
+              type="text"
+              name=""
+              id=""
+              placeholder="Pesquise o usuário"
+              v-model="inputData"
+            />
           </div>
           <div class="input-form">
             <button type="submit" class="btn-submit">
@@ -15,7 +21,7 @@
         </div>
       </form>
     </nav>
-    <div class="favorites-repositories">
+    <div class="favorite-repositories">
       <div class="" v-if="!favoriteRepositories.length">
         There's no favorite repositories yet
       </div>
@@ -38,7 +44,17 @@
 
 <script setup>
 const getFavoriteRepositories = require("@/composables/app/getFavoriteRepositories");
+const { ref } = require("@vue/reactivity");
+const { useRouter } = require("vue-router");
 const { favoriteRepositories } = getFavoriteRepositories();
+
+const router = useRouter();
+const inputData = ref("");
+
+function onSubmit() {
+  // Go to the search page
+  router.push({ name: "searchUser", params: { name: inputData.value } });
+}
 </script>
 
 <style scoped>
@@ -111,10 +127,9 @@ h3 {
   background-color: rgb(33, 34, 35);
 }
 
-.favorites-repository {
+.favorite-repositories {
   display: flex;
   flex-direction: column;
-  gap: 5px;
 }
 
 .favorite-repository {
@@ -125,6 +140,7 @@ h3 {
   flex-direction: column;
   align-items: flex-start;
   padding: 15px;
+  margin-bottom: 15px;
 }
 
 .repository__stars {

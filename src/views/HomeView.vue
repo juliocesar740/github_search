@@ -8,7 +8,13 @@
       <form action="" method="get" @submit.prevent="onSubmit">
         <div class="form-group form-group-row">
           <div class="input-form">
-            <input type="text" name="" id="" v-model="inputData" />
+            <input
+              type="text"
+              name=""
+              id=""
+              v-model="inputData"
+              placeholder="Pesquise um usuário"
+            />
           </div>
           <div class="input-form">
             <button type="submit" class="btn-submit">

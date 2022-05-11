@@ -8,7 +8,13 @@
       <form action="" method="get" @submit.prevent="onSubmit">
         <div class="form-group form-group-row">
           <div class="input-form">
-            <input type="text" name="" id="" placeholder="Pesquise o usuário" />
+            <input
+              type="text"
+              name=""
+              id=""
+              placeholder="Pesquise um usuário"
+              v-model="inputData"
+            />
           </div>
           <div class="input-form">
             <button type="submit" class="btn-submit">
@@ -51,19 +57,20 @@
       <div class="respositories">
         <div
           class="repository"
-          v-for="repository in repositories"
+          v-for="(repository, counter) in repositories"
           :key="repository.id"
         >
           <div class="flex-row">
             <h2>{{ repository.name }}</h2>
             <div class="star-mark">
               <i
+                ref="stars"
                 class="bi bi-star"
-                @click="
-                  storeFavoriteRepository(
-                    repository.owner.login,
-                    repository.name
-                  )
+                :class="{
+                  'star-gold': hasFavoriteRepository(repository),
+                }"
+                @click.once="
+                  starIconHandler(counter, repository.owner.login, repository)
                 "
               ></i>
             </div>
@@ -92,23 +99,46 @@
 
 <script setup>
 const { ref } = require("@vue/reactivity");
-const { useRoute } = require("vue-router");
+const { useRoute, useRouter, onBeforeRouteUpdate } = require("vue-router");
 const getUser = require("@/composables/api/getUser");
 const getRepositories = require("@/composables/api/getUserRepositories");
 const storeFavoriteRepository = require("@/composables/app/storeFavoriteRespository");
+const hasFavoriteRepository = require("@/composables/app/hasFavoriteRepository");
 
-// route
+const inputData = ref("");
+const router = useRouter();
 const route = useRoute();
 
-// user
 const user = ref("");
 user.value = await getUser(route.params.name);
 
-// repositoreis
 const repositories = ref("");
 repositories.value = await getRepositories(route.params.name);
 
-console.log(user.value, repositories.value);
+const stars = ref("");
+
+// functions
+function onSubmit() {
+  // Go to the search page
+  router.push({ name: "searchUser", params: { name: inputData.value } });
+}
+
+function starIconHandler(num, login, repo) {
+  console.log(num);
+  if (storeFavoriteRepository(login, repo)) {
+    stars.value[num].classList.add("star-gold");
+  }
+}
+
+// const changeRepos = computed(async () => {
+//   const repositories = await getRepositories(route.params.name);
+//   return repositories;
+// });
+
+onBeforeRouteUpdate(async (to) => {
+  user.value = await getUser(to.params.name);
+  repositories.value = await getRepositories(to.params.name);
+});
 </script>
 
 <style scoped>
@@ -237,17 +267,21 @@ h3 {
   gap: 5px;
 }
 
-.star-mark > i {
-  cursor: pointer;
-  font-size: 1.5rem;
-}
-
 .flex-row {
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+.star-mark > i {
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: 250ms ease;
+}
+
+.star-gold {
+  color: gold;
 }
 
 .star-mark > i:hover {
