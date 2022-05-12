@@ -12,6 +12,7 @@
 <script setup>
 // Setup the localstorage to store the repositories
 const setupLocalStorage = require("@/composables/app/setupLocalStorage");
+
 setupLocalStorage();
 </script>
 

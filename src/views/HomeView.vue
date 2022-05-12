@@ -56,7 +56,7 @@ h1 {
 }
 
 .main > .wrapper {
-  width: 35%;
+  width: calc(600px - 23vw);
 }
 
 .form-group {
@@ -103,5 +103,18 @@ h1 {
 
 .btn-submit:hover {
   background-color: rgb(33, 34, 35);
+}
+
+/* Media queries */
+
+@media screen and (max-width: 500px) {
+  .main > .wrapper {
+    width: calc(400px - 15vw);
+  }
+}
+@media screen and (max-width: 360px) {
+  .main > .wrapper {
+    width: calc(300px - 5vw);
+  }
 }
 </style>

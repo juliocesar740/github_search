@@ -2,7 +2,7 @@ const axios = require("axios");
 const getFavoriteRepositories = require("./getFavoriteRepositories");
 const hasFavoriteRepository = require("./hasFavoriteRepository");
 
-async function storeFavoriteRespository(owner, repo) {
+async function storeFavoriteRepository(owner, repo) {
   if (hasFavoriteRepository(repo)) return -1;
 
   const request = await axios(
@@ -20,4 +20,4 @@ async function storeFavoriteRespository(owner, repo) {
   return true;
 }
 
-module.exports = storeFavoriteRespository;
+module.exports = storeFavoriteRepository;

@@ -21,32 +21,14 @@
         </div>
       </form>
     </nav>
-    <div class="favorite-repositories">
-      <div class="" v-if="!favoriteRepositories.length">
-        There's no favorite repositories yet
-      </div>
-      <div
-        class="favorite-repository"
-        v-for="favoriteRepository in favoriteRepositories"
-        :key="favoriteRepository.id"
-        v-else
-      >
-        <h2>{{ favoriteRepository.name }}</h2>
-        <p>{{ favoriteRepository.description }}</p>
-        <div class="repository__stars">
-          <i class="bi bi-star"></i>
-          <span>{{ favoriteRepository.stargazers_count }}</span>
-        </div>
-      </div>
-    </div>
+    <FavoriteRepositories />
   </div>
 </template>
 
 <script setup>
-const getFavoriteRepositories = require("@/composables/app/getFavoriteRepositories");
+import FavoriteRepositories from "@/components/FavoriteRepositoriesComponent.vue";
 const { ref } = require("@vue/reactivity");
 const { useRouter } = require("vue-router");
-const { favoriteRepositories } = getFavoriteRepositories();
 
 const router = useRouter();
 const inputData = ref("");
@@ -62,28 +44,25 @@ h2,
 h3 {
   margin: 0;
 }
-.favorites-repositories-container {
-  /* border: 1px solid red; */
-}
 
 .favorites-repositories-container > nav {
-  /* border: 1px solid blue; */
-  width: 100%;
+  width: 95%;
+  margin: 0 auto;
   height: 60px;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: center;
-  /* gap: 150px; */
+  gap: 150px;
   margin-bottom: 30px;
 }
 
-/* .favorites-repositories-container > nav:first-child {
-  padding: 0 4.25%;
-} */
+.favorites-repositories-container > nav:first-child {
+  padding: 0 6.25%;
+}
 
 .form-group {
-  width: 500px;
+  width: 40vw;
 }
 
 .form-group-row {
@@ -103,7 +82,6 @@ h3 {
   width: 100%;
   height: 33px;
   outline: none;
-  /* border: 1px solid black; */
   padding: 7.5px;
   font-size: 1rem;
 }
@@ -127,26 +105,50 @@ h3 {
   background-color: rgb(33, 34, 35);
 }
 
-.favorite-repositories {
-  display: flex;
-  flex-direction: column;
+/* Media queries */
+
+@media screen and (max-width: 700px) {
+  .favorites-repositories-container > nav {
+    gap: 50px;
+  }
+  .favorites-repositories-container > nav:first-child {
+    padding: 0;
+  }
+
+  .favorites-repositories-container > nav > h1 {
+    font-size: 20px;
+  }
+  .form-group {
+    width: 285px;
+  }
 }
 
-.favorite-repository {
-  border: 1px solid black;
-  width: 95%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 15px;
-  margin-bottom: 15px;
+@media screen and (max-width: 530px) {
+  .favorites-repositories-container > nav {
+    gap: 20px;
+  }
+
+  .favorites-repositories-container > nav > h1 {
+    font-size: 18px;
+  }
+  .form-group {
+    width: 220px;
+  }
+  .input-form {
+    width: 85%;
+  }
+
+  .input-form:nth-of-type(2) {
+    width: 15%;
+  }
 }
 
-.repository__stars {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 5px;
+@media screen and (max-width: 415px) {
+  .form-group {
+    width: 180px;
+  }
+  .input-form > input[type="text"] {
+    font-size: 0.875rem;
+  }
 }
 </style>
