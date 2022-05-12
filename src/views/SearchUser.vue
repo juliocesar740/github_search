@@ -30,12 +30,17 @@
       <p><b>Tente pesquisar por outro usuário</b></p>
     </div>
     <div class="main" v-else>
-      <User :user="user" />
-      <Repositories
-        :user="user"
-        :repositories="repositories"
-        @toggle-loading="toggleLoading"
-      />
+      <Suspense>
+        <template #default> <User /> </template>
+        <template #fallback><UserSkeletonLoading /></template>
+      </Suspense>
+      <Suspense>
+        <template #default>
+          <Repositories @toggle-loading="toggleLoading" />
+        </template>
+        <template #fallback><RepositoriesSkeletonLoading /></template>
+      </Suspense>
+
       <Stars />
     </div>
     <div class="loading" v-if="loading"></div>
@@ -45,22 +50,20 @@
 <script setup>
 import User from "@/components/UserComponent.vue";
 import Repositories from "@/components/RepositoriesComponent.vue";
+import UserSkeletonLoading from "@/components/UserSkeletonLoading.vue";
+import RepositoriesSkeletonLoading from "@/components/RepositoriesSkeletonLoading.vue";
 import Stars from "@/components/StarsComponents.vue";
+import getUser from "@/composables/api/getUser";
+import { useRoute } from "vue-router";
 
 const { ref } = require("@vue/reactivity");
-const { useRoute } = require("vue-router");
-const getUser = require("@/composables/api/getUser");
-const getRepositories = require("@/composables/api/getUserRepositories");
-
-const inputData = ref("");
-const route = useRoute();
-
 const user = ref("");
+
+const route = useRoute();
 user.value = await getUser(route.params.name);
+document.title = route.params.name;
 
-const repositories = ref("");
-repositories.value = await getRepositories(route.params.name);
-
+const inputData = ref(route.params.name);
 const loading = ref(false);
 
 function toggleLoading() {

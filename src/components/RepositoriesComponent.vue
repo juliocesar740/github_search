@@ -38,22 +38,18 @@ const hasFavoriteRepository = require("@/composables/app/hasFavoriteRepository")
 const { onMounted } = require("@vue/runtime-core");
 const { useRoute } = require("vue-router");
 const getUserRepositories = require("@/composables/api/getUserRepositories");
-
-// eslint-disable-next-line no-undef
-const props = defineProps({
-  user: Object,
-  repositories: Array,
-});
+const getUser = require("@/composables/api/getUser");
 
 // eslint-disable-next-line no-undef
 const emit = defineEmits(["toggleLoading"]);
-
 const route = useRoute();
 
-// const route = useRoute();
-const repositories = ref(props.repositories);
+const repositories = ref("");
+repositories.value = await getUserRepositories(route.params.name);
 
-const user = ref(props.user);
+const user = ref("");
+user.value = await getUser(route.params.name);
+
 const loadingActive = ref(false);
 const repo_page = ref(15);
 const scrollToBottomCount = ref(0);
@@ -98,7 +94,7 @@ onMounted(() => {
 });
 </script>
 
-<style setup>
+<style scoped>
 .repositories {
   display: flex;
   flex-direction: column;

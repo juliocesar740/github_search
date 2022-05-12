@@ -31,14 +31,14 @@
 </template>
 
 <script setup>
+const getUser = require("@/composables/api/getUser");
 const { ref } = require("@vue/reactivity");
+const { useRoute } = require("vue-router");
 
-// eslint-disable-next-line no-undef
-const props = defineProps({
-  user: Object,
-});
+const route = useRoute();
 
-const user = ref(props.user);
+const user = ref("");
+user.value = await getUser(route.params.name);
 </script>
 
 <style scoped>
