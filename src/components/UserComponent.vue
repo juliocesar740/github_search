@@ -32,16 +32,13 @@
 
 <script setup>
 const { ref } = require("@vue/reactivity");
-const { useRoute, onBeforeRouteUpdate } = require("vue-router");
-const getUser = require("@/composables/api/getUser");
 
-const route = useRoute();
-const user = ref("");
-user.value = await getUser(route.params.name);
-
-onBeforeRouteUpdate(async (to) => {
-  user.value = await getUser(to.params.name);
+// eslint-disable-next-line no-undef
+const props = defineProps({
+  user: Object,
 });
+
+const user = ref(props.user);
 </script>
 
 <style scoped>

@@ -33,6 +33,8 @@ const { useRouter } = require("vue-router");
 const router = useRouter();
 const inputData = ref("");
 
+document.title = "Favorites";
+
 function onSubmit() {
   // Go to the search page
   router.push({ name: "searchUser", params: { name: inputData.value } });

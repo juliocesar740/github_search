@@ -5,7 +5,7 @@
         <span style="font-weight: 600">Github </span>
         <i style="font-weight: 500; color: rgb(36, 39, 43)">Search</i>
       </h1>
-      <form action="" method="get" @submit.prevent="onSubmit">
+      <form :action="`/searchUser/${inputData}`" method="get">
         <div class="form-group form-group-row">
           <div class="input-form">
             <input
@@ -24,12 +24,21 @@
         </div>
       </form>
     </nav>
-    <div class="main">
-      <User />
-      <Repositories :user="user" />
+    <div class="error-msg" v-if="user === null">
+      <i class="bi bi-emoji-neutral" style="font-size: 4rem"></i>
+      <h3>Infelizmente O usuário não foi encontrado!</h3>
+      <p><b>Tente pesquisar por outro usuário</b></p>
+    </div>
+    <div class="main" v-else>
+      <User :user="user" />
+      <Repositories
+        :user="user"
+        :repositories="repositories"
+        @toggle-loading="toggleLoading"
+      />
       <Stars />
     </div>
-    <div class="loading" v-if="loadingActive"></div>
+    <div class="loading" v-if="loading"></div>
   </div>
 </template>
 
@@ -39,22 +48,23 @@ import Repositories from "@/components/RepositoriesComponent.vue";
 import Stars from "@/components/StarsComponents.vue";
 
 const { ref } = require("@vue/reactivity");
-const { useRoute, useRouter } = require("vue-router");
+const { useRoute } = require("vue-router");
 const getUser = require("@/composables/api/getUser");
+const getRepositories = require("@/composables/api/getUserRepositories");
 
 const inputData = ref("");
-const router = useRouter();
 const route = useRoute();
 
 const user = ref("");
 user.value = await getUser(route.params.name);
 
-const loadingActive = ref(false);
+const repositories = ref("");
+repositories.value = await getRepositories(route.params.name);
 
-// functions
-function onSubmit() {
-  // Go to the search page
-  router.push({ name: "searchUser", params: { name: inputData.value } });
+const loading = ref(false);
+
+function toggleLoading() {
+  loading.value = !loading.value;
 }
 </script>
 

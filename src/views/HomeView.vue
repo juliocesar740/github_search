@@ -33,6 +33,8 @@ const { useRouter } = require("vue-router");
 const inputData = ref("");
 const router = useRouter();
 
+document.title = "Homepage";
+
 function onSubmit() {
   // Go to the search page
   router.push({ name: "searchUser", params: { name: inputData.value } });
@@ -56,7 +58,7 @@ h1 {
 }
 
 .main > .wrapper {
-  width: calc(600px - 23vw);
+  width: calc(600px - 10vw);
 }
 
 .form-group {
@@ -107,7 +109,7 @@ h1 {
 
 /* Media queries */
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 550px) {
   .main > .wrapper {
     width: calc(400px - 15vw);
   }

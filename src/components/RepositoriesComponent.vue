@@ -11,7 +11,6 @@
         <h3>{{ repository.name }}</h3>
         <div class="star-mark">
           <i
-            ref="stars"
             class="bi bi-star"
             :class="{
               'star-gold': hasFavoriteRepository(repository),
@@ -34,37 +33,39 @@
 
 <script setup>
 const { ref } = require("@vue/reactivity");
-const { useRoute, onBeforeRouteUpdate } = require("vue-router");
-const getRepositories = require("@/composables/api/getUserRepositories");
 const storeFavoriteRepository = require("@/composables/app/storeFavoriteRepository");
 const hasFavoriteRepository = require("@/composables/app/hasFavoriteRepository");
 const { onMounted } = require("@vue/runtime-core");
+const { useRoute } = require("vue-router");
+const getUserRepositories = require("@/composables/api/getUserRepositories");
 
 // eslint-disable-next-line no-undef
 const props = defineProps({
   user: Object,
+  repositories: Array,
 });
 
+// eslint-disable-next-line no-undef
+const emit = defineEmits(["toggleLoading"]);
+
 const route = useRoute();
-const repositories = ref("");
-repositories.value = await getRepositories(route.params.name);
+
+// const route = useRoute();
+const repositories = ref(props.repositories);
 
 const user = ref(props.user);
 const loadingActive = ref(false);
-const stars = ref("");
 const repo_page = ref(15);
 const scrollToBottomCount = ref(0);
 
-onBeforeRouteUpdate(async (to) => {
-  repositories.value = await getRepositories(to.params.name);
-});
-
 function starIconHandler(num, login, repo) {
   if (storeFavoriteRepository(login, repo)) {
-    stars.value[num].classList.add("star-gold");
+    Array.from(document.querySelectorAll(".star-mark > i"))[num].classList.add(
+      "star-gold"
+    );
   }
 }
-const scroll = (window.onscroll = async () => {
+const scroll = (window.onwheel = async () => {
   let bottomOfWindow =
     window.innerHeight + window.scrollY >= document.body.offsetHeight;
 
@@ -74,17 +75,17 @@ const scroll = (window.onscroll = async () => {
 
     if (repositories.value.length >= user.value.public_repos) return -1;
 
-    console.log("OK");
+    emit("toggleLoading");
     loadingActive.value = true;
     repo_page.value += 15;
 
-    repositories.value = await getRepositories(
+    repositories.value = await getUserRepositories(
       route.params.name,
       repo_page.value
     );
 
     if (repositories.value) {
-      loadingActive.value = false;
+      emit("toggleLoading");
       scrollToBottomCount.value = 0;
     }
   }
