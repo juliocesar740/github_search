@@ -5,7 +5,7 @@
         <span style="font-weight: 600">Github </span>
         <i style="font-weight: 500; color: rgb(36, 39, 43)">Search</i>
       </h1>
-      <form :action="`/search/${inputData}`" method="get">
+      <form action="" method="get" @submit.prevent="onSubmit">
         <div class="form-group form-group-row">
           <div class="input-form">
             <input
@@ -69,6 +69,9 @@ const loading = ref(false);
 // Active or deactive the loading on the bottom of the page
 function toggleLoading() {
   loading.value = !loading.value;
+}
+function onSubmit() {
+  window.location.replace(`/search/${inputData.value}`);
 }
 </script>
 
