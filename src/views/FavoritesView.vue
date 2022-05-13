@@ -32,7 +32,6 @@ const { useRouter } = require("vue-router");
 
 const router = useRouter();
 const inputData = ref("");
-
 document.title = "Favorites";
 
 function onSubmit() {

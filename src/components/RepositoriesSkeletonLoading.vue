@@ -12,7 +12,7 @@
   flex-direction: column;
 }
 .repository-skeleton-loading {
-  background-color: rgb(200, 207, 207);
+  background-color: rgb(208, 215, 215);
   border-radius: 5px;
   height: 150px;
   width: 100%;

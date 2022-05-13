@@ -1,9 +1,9 @@
 const getFavoriteRepositories = require("./getFavoriteRepositories");
 
 /**
- * Check if the localstorage has this repository
+ * Check if the local storage has this repository
  * @param {Object} repo
- * @returns
+ * @returns {boolean}
  */
 function hasFavoriteRepository(repo) {
   const { favoriteRepositories } = getFavoriteRepositories();

@@ -30,7 +30,7 @@
 .skeleton-loading__img {
   width: 170px;
   height: 170px;
-  background-color: rgb(200, 207, 207);
+  background-color: rgb(208, 215, 215);
   margin-bottom: 5px;
 }
 
@@ -38,7 +38,7 @@
   width: 80%;
   height: 22px;
   margin: 5px 0;
-  background-color: rgb(200, 207, 207);
+  background-color: rgb(208, 215, 215);
 }
 
 /* Media Queries */

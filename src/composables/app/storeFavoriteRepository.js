@@ -2,6 +2,12 @@ const axios = require("axios");
 const getFavoriteRepositories = require("./getFavoriteRepositories");
 const hasFavoriteRepository = require("./hasFavoriteRepository");
 
+/**
+ * Store the repository in the local storage
+ * @param {string} owner
+ * @param {string} repo
+ * @returns {null|void}
+ */
 async function storeFavoriteRepository(owner, repo) {
   if (hasFavoriteRepository(repo)) return -1;
 
@@ -17,7 +23,6 @@ async function storeFavoriteRepository(owner, repo) {
     "APP_FAVORITE_REPOSITORIES",
     JSON.stringify(favoriteRepositories)
   );
-  return true;
 }
 
 module.exports = storeFavoriteRepository;

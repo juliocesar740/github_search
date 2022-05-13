@@ -31,7 +31,7 @@ const { favoriteRepositories } = getFavoriteRepositories();
 }
 
 .favorite-repository {
-  border: 1px solid black;
+  background-color: rgba(228, 237, 238, 0.905);
   width: 95%;
   margin: 0 auto;
   display: flex;

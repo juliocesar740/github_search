@@ -43,45 +43,49 @@ const getUser = require("@/composables/api/getUser");
 // eslint-disable-next-line no-undef
 const emit = defineEmits(["toggleLoading"]);
 const route = useRoute();
-
 const repositories = ref("");
 repositories.value = await getUserRepositories(route.params.name);
-
 const user = ref("");
 user.value = await getUser(route.params.name);
-
-const loadingActive = ref(false);
 const repo_page = ref(15);
 const scrollToBottomCount = ref(0);
 
+// Store the repository in a list of favorite repositories and change the color of the star icon
 function starIconHandler(num, login, repo) {
-  if (storeFavoriteRepository(login, repo)) {
-    Array.from(document.querySelectorAll(".star-mark > i"))[num].classList.add(
-      "star-gold"
-    );
-  }
+  storeFavoriteRepository(login, repo);
+  Array.from(document.querySelectorAll(".star-mark > i"))[num].classList.add(
+    "star-gold"
+  );
 }
+// Scroll the repositores and  check if there is more left so it will make more requests
 const scroll = (window.onwheel = async () => {
+  // end of the page
   let bottomOfWindow =
     window.innerHeight + window.scrollY >= document.body.offsetHeight;
 
+  // Stop repeated events
   if (bottomOfWindow) {
     scrollToBottomCount.value += 1;
+    // it will cancel multiple triggered scroll events until the first one is finished
     if (scrollToBottomCount.value > 1) return -1;
 
-    if (repositories.value.length >= user.value.public_repos) return -1;
+    // stop the function in case there are no more repositories from the user to get
+    if (repositories.value.length === user.value.public_repos) return -1;
 
+    // active loading
     emit("toggleLoading");
-    loadingActive.value = true;
     repo_page.value += 15;
 
+    // make the request
     repositories.value = await getUserRepositories(
       route.params.name,
       repo_page.value
     );
 
     if (repositories.value) {
+      // deactive loading
       emit("toggleLoading");
+      // finish the first scroll event
       scrollToBottomCount.value = 0;
     }
   }
@@ -101,7 +105,7 @@ onMounted(() => {
 }
 .repository {
   position: relative;
-  border: 1px solid black;
+  background-color: rgba(228, 237, 238, 0.905);
   border-radius: 5px;
   width: 100%;
   display: flex;
@@ -113,6 +117,7 @@ onMounted(() => {
 }
 
 .repository h3 {
+  font-weight: normal;
   word-wrap: break-word;
   padding-right: 3.5px;
 }
@@ -125,11 +130,17 @@ onMounted(() => {
 
 .flex-row {
   width: 100%;
+  height: 25px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
+
+.flex-row > h3 {
+  margin: 5px 0;
+}
+
 .star-mark > i {
   cursor: pointer;
   font-size: 1.5rem;

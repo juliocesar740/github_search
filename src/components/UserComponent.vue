@@ -1,18 +1,23 @@
 <template>
   <div class="user">
     <div class="user__avatar">
-      <img :src="`${user.avatar_url}`" height="170" width="170" />
+      <img
+        loading="lazy"
+        :src="`${user.avatar_url}`"
+        height="170"
+        width="170"
+      />
     </div>
     <div class="user-info">
-      <h2>{{ user.name }}</h2>
+      <h2>{{ user.name || "Não encontrado" }}</h2>
       <h3 id="user-info__login">{{ user.login }}</h3>
       <div class="user-icon">
         <i class="bi bi-briefcase"></i>
-        <span>{{ user.company || "undefined" }}</span>
+        <span>{{ user.company || "Não encontrado" }}</span>
       </div>
       <div class="user-icon">
         <i class="bi bi-geo"></i>
-        <span>{{ user.location || "undefined" }}</span>
+        <span>{{ user.location || "Não encontrado" }}</span>
       </div>
       <div class="user-icon">
         <i class="bi bi-star"></i>
@@ -20,11 +25,11 @@
       </div>
       <div class="user-icon">
         <i class="bi bi-archive"></i>
-        <span>{{ user.public_repos || "undefined" }}</span>
+        <span>{{ user.public_repos || "Não encontrado" }}</span>
       </div>
       <div class="user-icon">
         <i class="bi bi-people"></i>
-        <span>{{ user.followers || "undefined" }}</span>
+        <span>{{ user.followers || "Não encontrado" }}</span>
       </div>
     </div>
   </div>
@@ -34,9 +39,7 @@
 const getUser = require("@/composables/api/getUser");
 const { ref } = require("@vue/reactivity");
 const { useRoute } = require("vue-router");
-
 const route = useRoute();
-
 const user = ref("");
 user.value = await getUser(route.params.name);
 </script>
@@ -49,15 +52,24 @@ user.value = await getUser(route.params.name);
 }
 
 .user-info {
-  padding: 2.5px 0;
+  padding: 2.5px 5px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
+.user-info > h2 {
+  font-weight: normal;
+  margin-bottom: 5px;
+  font-size: 17.5px;
+  word-wrap: break-word;
+}
+
 #user-info__login {
+  font-size: 15px;
+  color: rgb(36, 36, 36);
   margin-top: 3.5px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .user-icon {

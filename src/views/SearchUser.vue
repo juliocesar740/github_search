@@ -26,7 +26,7 @@
     </nav>
     <div class="error-msg" v-if="user === null">
       <i class="bi bi-emoji-neutral" style="font-size: 4rem"></i>
-      <h3>Infelizmente O usuário não foi encontrado!</h3>
+      <h3>Infelizmente o usuário não foi encontrado!</h3>
       <p><b>Tente pesquisar por outro usuário</b></p>
     </div>
     <div class="main" v-else>
@@ -58,14 +58,15 @@ import { useRoute } from "vue-router";
 
 const { ref } = require("@vue/reactivity");
 const user = ref("");
-
 const route = useRoute();
 user.value = await getUser(route.params.name);
+
 document.title = route.params.name;
 
 const inputData = ref(route.params.name);
 const loading = ref(false);
 
+// Active or deactive the loading on the bottom of the page
 function toggleLoading() {
   loading.value = !loading.value;
 }
