@@ -5,7 +5,7 @@
         <span style="font-weight: 600">Github </span>
         <i style="font-weight: 500; color: rgb(36, 39, 43)">Search</i>
       </h1>
-      <form :action="`/searchUser/${inputData}`" method="get">
+      <form :action="`/search/${inputData}`" method="get">
         <div class="form-group form-group-row">
           <div class="input-form">
             <input

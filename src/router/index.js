@@ -10,8 +10,8 @@ const routes = [
     component: HomeView,
   },
   {
-    path: "/searchUser/:name",
-    name: "searchUser",
+    path: "/search/:name",
+    name: "search",
     component: SearchUser,
   },
   {

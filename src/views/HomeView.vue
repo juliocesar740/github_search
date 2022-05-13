@@ -37,7 +37,7 @@ document.title = "Homepage";
 
 function onSubmit() {
   // Go to the search page
-  router.push({ name: "searchUser", params: { name: inputData.value } });
+  router.push({ name: "search", params: { name: inputData.value } });
 }
 </script>
 
