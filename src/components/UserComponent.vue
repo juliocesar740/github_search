@@ -21,7 +21,7 @@
       </div>
       <div class="user-icon">
         <i class="bi bi-star"></i>
-        <span>{{ 0 }}</span>
+        <span>{{ user.starred_repositories || "Não encontrado" }}</span>
       </div>
       <div class="user-icon">
         <i class="bi bi-archive"></i>

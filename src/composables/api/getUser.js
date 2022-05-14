@@ -1,4 +1,5 @@
 const axios = require("axios");
+const getUserStarredRepositoriesCount = require("./getUserStarredRepositoriesCount");
 
 /**
  * Get the user
@@ -9,6 +10,12 @@ async function getUser(username) {
   try {
     const request = await axios.get(`https://api.github.com/users/${username}`);
     const data = request.data;
+
+    // get user starred repositories count
+    const starredRepositoriesCount = await getUserStarredRepositoriesCount(
+      username
+    );
+    data["starred_repositories"] = starredRepositoriesCount;
 
     return data;
   } catch (error) {
